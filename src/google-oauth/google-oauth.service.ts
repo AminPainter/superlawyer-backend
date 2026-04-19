@@ -70,8 +70,10 @@ export class GoogleOauthService {
 
     const user = await this.usersService.upsertByEmail({
       email: profile.email,
-      name: profile.name,
-      pictureUrl: profile.pictureUrl,
+      data: {
+        name: profile.name,
+        pictureUrl: profile.pictureUrl,
+      },
     });
 
     await this.oauthAccountsService.upsertForUser({
