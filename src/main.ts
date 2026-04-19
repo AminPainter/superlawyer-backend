@@ -1,8 +1,15 @@
+import { VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { ConfigType } from '@nestjs/config';
+import { ZodValidationPipe } from 'nestjs-zod';
+import { AppModule } from './app/app.module';
+import { config } from './config/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? 3000);
+  app.useGlobalPipes(new ZodValidationPipe());
+  app.enableVersioning({ type: VersioningType.URI });
+  const envConfig = app.get<ConfigType<typeof config>>(config.KEY);
+  await app.listen(envConfig.app.port);
 }
-bootstrap();
+void bootstrap();
