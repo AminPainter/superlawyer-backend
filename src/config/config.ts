@@ -1,5 +1,5 @@
 import { registerAs } from '@nestjs/config';
-import { validateEnv } from './env.validation';
+import { validateEnv } from 'src/config/env.validation';
 
 export const config = registerAs('config', () => {
   const env = validateEnv(process.env);

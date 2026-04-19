@@ -2,8 +2,8 @@ import { VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ConfigType } from '@nestjs/config';
 import { ZodValidationPipe } from 'nestjs-zod';
-import { AppModule } from './app/app.module';
-import { config } from './config/config';
+import { AppModule } from 'src/app/app.module';
+import { config } from 'src/config/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { GoogleOauthController } from './google-oauth.controller';
-import { GoogleOauthService } from './google-oauth.service';
-import { config } from '../config/config';
-import { OAuthAccountsModule } from '../oauth-accounts/oauth-accounts.module';
-import { UsersModule } from '../users/users.module';
+import { GoogleOauthController } from 'src/google-oauth/google-oauth.controller';
+import { GoogleOauthService } from 'src/google-oauth/google-oauth.service';
+import { config } from 'src/config/config';
+import { OAuthAccountsModule } from 'src/oauth-accounts/oauth-accounts.module';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [

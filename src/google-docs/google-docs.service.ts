@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { docs_v1, google } from 'googleapis';
-import { GoogleOauthService } from '../google-oauth/google-oauth.service';
+import { GoogleOauthService } from 'src/google-oauth/google-oauth.service';
 
 @Injectable()
 export class GoogleDocsService {

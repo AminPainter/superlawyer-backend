@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import * as Iron from 'iron-webcrypto';
-import { config } from '../config/config';
+import { config } from 'src/config/config';
 
 @Injectable()
 export class CryptoService {

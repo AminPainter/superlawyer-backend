@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { docs_v1 } from 'googleapis';
-import { DocsParamsDto, DocsQueryDto } from './dto/docs-params.dto';
-import { GoogleDocsService } from './google-docs.service';
+import { DocsParamsDto, DocsQueryDto } from 'src/google-docs/dto/docs-params.dto';
+import { GoogleDocsService } from 'src/google-docs/google-docs.service';
 
 @Controller({ path: 'docs', version: '1' })
 export class GoogleDocsController {

@@ -6,8 +6,8 @@ import {
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { OauthCallbackQueryDto } from './dto/oauth-callback.dto';
-import { GoogleOauthService } from './google-oauth.service';
+import { OauthCallbackQueryDto } from 'src/google-oauth/dto/oauth-callback.dto';
+import { GoogleOauthService } from 'src/google-oauth/google-oauth.service';
 
 @Controller({ path: 'auth/google', version: '1' })
 export class GoogleOauthController {

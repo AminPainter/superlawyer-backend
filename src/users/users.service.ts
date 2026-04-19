@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import type { User } from '../../generated/prisma/client';
-import { PrismaService } from '../prisma/prisma.service';
+import type { User } from 'generated/prisma/client';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 export interface UpsertUserInput {
   email: string;

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import type { Credentials } from 'google-auth-library';
-import type { OAuthAccount, Prisma } from '../../generated/prisma/client';
-import { CryptoService } from '../crypto/crypto.service';
-import { PrismaService } from '../prisma/prisma.service';
+import type { OAuthAccount, Prisma } from 'generated/prisma/client';
+import { CryptoService } from 'src/crypto/crypto.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 export type UpsertOAuthAccountInput = Omit<
   Prisma.OAuthAccountUncheckedCreateInput,

@@ -8,10 +8,13 @@ import {
 import { ConfigType } from '@nestjs/config';
 import { google } from 'googleapis';
 import { Credentials, OAuth2Client } from 'google-auth-library';
-import { config } from '../config/config';
-import { OAuthAccountsService } from '../oauth-accounts/oauth-accounts.service';
-import { UsersService } from '../users/users.service';
-import { GOOGLE_OAUTH_SCOPES, GOOGLE_PROVIDER } from './google-oauth.constants';
+import { config } from 'src/config/config';
+import { OAuthAccountsService } from 'src/oauth-accounts/oauth-accounts.service';
+import { UsersService } from 'src/users/users.service';
+import {
+  GOOGLE_OAUTH_SCOPES,
+  GOOGLE_PROVIDER,
+} from 'src/google-oauth/google-oauth.constants';
 
 export interface GoogleUserInfo {
   sub: string;
