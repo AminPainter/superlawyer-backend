@@ -22,5 +22,5 @@
       "generated/*": ["./generated/*"]
     }
   },
-  "include": ["src/**/*", "generated/**/*"]
+  "include": ["src/**/*", "generated/**/*", "prisma.config.ts"]
 }
