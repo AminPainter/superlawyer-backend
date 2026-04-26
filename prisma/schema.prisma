@@ -26,7 +26,7 @@ model OAuthAccount {
   user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   provider             String
   providerAccountId    String
-  providerEmail        String?
+  providerEmail        String
   scope                String
   tokenType            String
   accessToken          String

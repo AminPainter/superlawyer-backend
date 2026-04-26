@@ -46,7 +46,7 @@ export class OAuthAccountsService {
         userId: input.userId,
         provider: input.provider,
         providerAccountId: input.providerAccountId,
-        providerEmail: input.providerEmail ?? null,
+        providerEmail: input.providerEmail,
         scope: input.scope,
         tokenType: input.tokenType,
         accessToken: accessTokenSealed,

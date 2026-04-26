@@ -20,7 +20,7 @@ export class OAuthAccountsRepository {
       create: input,
       update: {
         userId: input.userId,
-        providerEmail: input.providerEmail ?? null,
+        providerEmail: input.providerEmail,
         scope: input.scope,
         tokenType: input.tokenType,
         accessToken: input.accessToken,
