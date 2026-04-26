@@ -17,10 +17,9 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
-    "baseUrl": "./",
     "paths": {
-      "src/*": ["src/*"],
-      "generated/*": ["generated/*"]
+      "src/*": ["./src/*"],
+      "generated/*": ["./generated/*"]
     }
   },
   "include": ["src/**/*", "generated/**/*"]
