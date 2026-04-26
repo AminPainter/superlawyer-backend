@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import type { Credentials } from 'google-auth-library';
 import type { OAuthAccount, Prisma } from 'generated/prisma/client';
 import { CryptoService } from 'src/crypto/crypto.service';
@@ -22,8 +22,6 @@ export type RefreshedTokens = Credentials;
 
 @Injectable()
 export class OAuthAccountsService {
-  private readonly logger = new Logger(OAuthAccountsService.name);
-
   constructor(
     private readonly oauthAccountsRepository: OAuthAccountsRepository,
     private readonly cryptoService: CryptoService,
@@ -38,27 +36,20 @@ export class OAuthAccountsService {
       this.cryptoService.seal(input.refreshToken),
     ]);
 
-    const account = await this.oauthAccountsRepository.upsertByProviderAccount(
+    return this.oauthAccountsRepository.upsertByProviderAccount(
       {
         userId: input.userId,
         provider: input.provider,
         providerAccountId: input.providerAccountId,
         providerEmail: input.providerEmail ?? null,
         scope: input.scope,
-        tokenType: input.tokenType ?? null,
+        tokenType: input.tokenType,
         accessToken: accessTokenSealed,
-        accessTokenExpiresAt: input.accessTokenExpiresAt ?? null,
+        accessTokenExpiresAt: input.accessTokenExpiresAt,
         refreshToken: refreshTokenSealed,
       },
       tx,
     );
-
-    this.logger.log({
-      message: 'OAuth account upserted',
-      userId: input.userId,
-      provider: input.provider,
-    });
-    return account;
   }
 
   async getByUserAndProvider(

@@ -1,4 +1,4 @@
-import { Logger, VersioningType } from '@nestjs/common';
+import { VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ConfigType } from '@nestjs/config';
 import { ZodValidationPipe } from 'nestjs-zod';
@@ -17,16 +17,13 @@ async function bootstrap() {
   app.enableVersioning({ type: VersioningType.URI });
   const envConfig = app.get<ConfigType<typeof config>>(config.KEY);
   const shutdown = app.get(ShutdownService);
-  const logger = new Logger('Bootstrap');
 
   await app.listen(envConfig.app.port);
 
-  const drainAndClose = async (signal: NodeJS.Signals) => {
-    logger.log(`Received ${signal}, flipping readiness and draining`);
+  const drainAndClose = async (_signal: NodeJS.Signals) => {
     shutdown.startShutdown();
 
     const forceExit = setTimeout(() => {
-      logger.error(`Forced exit after ${SHUTDOWN_FORCE_MS}ms`);
       process.exit(1);
     }, SHUTDOWN_FORCE_MS);
     forceExit.unref();
@@ -37,10 +34,8 @@ async function bootstrap() {
 
     try {
       await app.close();
-      logger.log('Shutdown complete');
       process.exit(0);
-    } catch (err) {
-      logger.error('Error during shutdown', err as Error);
+    } catch {
       process.exit(1);
     }
   };

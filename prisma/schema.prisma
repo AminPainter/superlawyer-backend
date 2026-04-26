@@ -28,9 +28,9 @@ model OAuthAccount {
   providerAccountId    String
   providerEmail        String?
   scope                String
-  tokenType            String?
+  tokenType            String
   accessToken          String
-  accessTokenExpiresAt DateTime?
+  accessTokenExpiresAt DateTime
   refreshToken         String
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt

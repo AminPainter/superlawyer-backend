@@ -22,9 +22,9 @@ export class OAuthAccountsRepository {
         userId: input.userId,
         providerEmail: input.providerEmail ?? null,
         scope: input.scope,
-        tokenType: input.tokenType ?? null,
+        tokenType: input.tokenType,
         accessToken: input.accessToken,
-        accessTokenExpiresAt: input.accessTokenExpiresAt ?? null,
+        accessTokenExpiresAt: input.accessTokenExpiresAt,
         refreshToken: input.refreshToken,
       },
     });
