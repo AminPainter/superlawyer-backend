@@ -15,4 +15,8 @@ export class UsersService {
   ): Promise<User> {
     return this.usersRepository.upsertByEmail(input, tx);
   }
+
+  async findById(id: string): Promise<User | null> {
+    return this.usersRepository.findById(id);
+  }
 }

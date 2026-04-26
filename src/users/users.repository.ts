@@ -15,6 +15,10 @@ export class UsersRepository {
     return this.prismaService.user.findUnique({ where: { email } });
   }
 
+  async findById(id: string): Promise<User | null> {
+    return this.prismaService.user.findUnique({ where: { id } });
+  }
+
   async upsertByEmail(
     input: UpsertUserByEmailInput,
     tx: Prisma.TransactionClient = this.prismaService,

@@ -12,7 +12,12 @@ export const envSchema = z.object({
   TOKEN_ENCRYPTION_PASSWORD: z
     .string()
     .min(32, 'TOKEN_ENCRYPTION_PASSWORD must be at least 32 characters'),
-  FRONTEND_POST_LOGIN_URL: z.url().optional(),
+  FRONTEND_POST_LOGIN_URL: z.url(),
+  JWT_SECRET: z.string().min(32, 'JWT_SECRET must be at least 32 characters'),
+  JWT_ISSUER: z.string().min(1).default('superlawyer'),
+  JWT_AUDIENCE: z.string().min(1).default('superlawyer-frontend'),
+  JWT_EXPIRES_IN: z.string().min(1).default('7d'),
+  COOKIE_DOMAIN: z.string().min(1).optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;

@@ -9,6 +9,7 @@ export const config = registerAs('config', () => {
       nodeEnv: env.NODE_ENV,
       port: env.PORT,
       frontendPostLoginUrl: env.FRONTEND_POST_LOGIN_URL,
+      cookieDomain: env.COOKIE_DOMAIN,
     },
     database: {
       url: env.DATABASE_URL,
@@ -20,6 +21,12 @@ export const config = registerAs('config', () => {
     },
     crypto: {
       password: env.TOKEN_ENCRYPTION_PASSWORD,
+    },
+    jwt: {
+      secret: env.JWT_SECRET,
+      issuer: env.JWT_ISSUER,
+      audience: env.JWT_AUDIENCE,
+      expiresIn: env.JWT_EXPIRES_IN,
     },
   };
 });

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from 'src/app/app.controller';
+import { AuthModule } from 'src/auth/auth.module';
 import { CryptoModule } from 'src/crypto/crypto.module';
 import { GoogleOauthModule } from 'src/google-oauth/google-oauth.module';
 import { OAuthAccountsModule } from 'src/oauth-accounts/oauth-accounts.module';
@@ -21,6 +22,7 @@ import { validateEnv } from 'src/config/env.validation';
     CryptoModule,
     UsersModule,
     OAuthAccountsModule,
+    AuthModule,
     GoogleOauthModule,
   ],
   controllers: [AppController],
