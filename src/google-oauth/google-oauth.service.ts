@@ -113,10 +113,19 @@ export class GoogleOauthService {
     // The 'tokens' event fires with the new credentials; persist them so subsequent
     // requests reuse the fresh access_token instead of refreshing again.
     client.on('tokens', (tokens) => {
+      if (!tokens.access_token || !tokens.expiry_date || !tokens.token_type) {
+        return;
+      }
       void this.oauthAccountsService.updateRefreshedTokens(
         userId,
         GOOGLE_PROVIDER,
-        tokens,
+        {
+          accessToken: tokens.access_token,
+          accessTokenExpiresAt: new Date(tokens.expiry_date),
+          tokenType: tokens.token_type,
+          refreshToken: tokens.refresh_token ?? undefined,
+          scope: tokens.scope ?? undefined,
+        },
       );
     });
 

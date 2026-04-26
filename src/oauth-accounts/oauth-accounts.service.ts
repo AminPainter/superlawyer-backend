@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import type { Credentials } from 'google-auth-library';
 import type { OAuthAccount, Prisma } from 'generated/prisma/client';
 import { CryptoService } from 'src/crypto/crypto.service';
 import { OAuthAccountsRepository } from 'src/oauth-accounts/oauth-accounts.repository';
@@ -18,7 +17,13 @@ export type OAuthAccountTokens = Pick<
   | 'tokenType'
 >;
 
-export type RefreshedTokens = Credentials;
+export type RefreshedTokens = {
+  accessToken: string;
+  accessTokenExpiresAt: Date;
+  tokenType: string;
+  refreshToken?: string;
+  scope?: string;
+};
 
 @Injectable()
 export class OAuthAccountsService {
@@ -81,24 +86,18 @@ export class OAuthAccountsService {
     tokens: RefreshedTokens,
   ): Promise<void> {
     const [accessTokenSealed, refreshTokenSealed] = await Promise.all([
-      tokens.access_token ? this.cryptoService.seal(tokens.access_token) : null,
-      tokens.refresh_token
-        ? this.cryptoService.seal(tokens.refresh_token)
-        : null,
+      this.cryptoService.seal(tokens.accessToken),
+      tokens.refreshToken ? this.cryptoService.seal(tokens.refreshToken) : null,
     ]);
 
     await this.oauthAccountsRepository.updateTokensByUserAndProvider(
       userId,
       provider,
       {
-        ...(accessTokenSealed !== null
-          ? { accessToken: accessTokenSealed }
-          : {}),
-        ...(tokens.expiry_date
-          ? { accessTokenExpiresAt: new Date(tokens.expiry_date) }
-          : {}),
+        accessToken: accessTokenSealed,
+        accessTokenExpiresAt: tokens.accessTokenExpiresAt,
+        tokenType: tokens.tokenType,
         ...(refreshTokenSealed ? { refreshToken: refreshTokenSealed } : {}),
-        ...(tokens.token_type ? { tokenType: tokens.token_type } : {}),
         ...(tokens.scope ? { scope: tokens.scope } : {}),
       },
     );
