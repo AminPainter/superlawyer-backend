@@ -15,8 +15,11 @@ export class UsersRepository {
     return this.prismaService.user.findUnique({ where: { email } });
   }
 
-  async upsertByEmail(input: UpsertUserByEmailInput): Promise<User> {
-    return this.prismaService.user.upsert({
+  async upsertByEmail(
+    input: UpsertUserByEmailInput,
+    tx: Prisma.TransactionClient = this.prismaService,
+  ): Promise<User> {
+    return tx.user.upsert({
       where: { email: input.email },
       create: {
         email: input.email,

@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { type User } from 'generated/prisma/client';
+import { Injectable, Logger } from '@nestjs/common';
+import { Prisma, type User } from 'generated/prisma/client';
 import {
   UsersRepository,
   type UpsertUserByEmailInput,
@@ -7,9 +7,16 @@ import {
 
 @Injectable()
 export class UsersService {
+  private readonly logger = new Logger(UsersService.name);
+
   constructor(private readonly usersRepository: UsersRepository) {}
 
-  async upsertByEmail(input: UpsertUserByEmailInput): Promise<User> {
-    return this.usersRepository.upsertByEmail(input);
+  async upsertByEmail(
+    input: UpsertUserByEmailInput,
+    tx?: Prisma.TransactionClient,
+  ): Promise<User> {
+    const user = await this.usersRepository.upsertByEmail(input, tx);
+    this.logger.log({ message: 'User upserted', userId: user.id });
+    return user;
   }
 }

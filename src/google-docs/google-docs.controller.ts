@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
-import { docs_v1 } from 'googleapis';
 import { DocsParamsDto, DocsQueryDto } from 'src/google-docs/dto/docs-params.dto';
+import { GoogleDocDto } from 'src/google-docs/dto/google-doc.dto';
 import { GoogleDocsService } from 'src/google-docs/google-docs.service';
 
 @Controller({ path: 'docs', version: '1' })
@@ -12,7 +12,7 @@ export class GoogleDocsController {
   async read(
     @Param() params: DocsParamsDto,
     @Query() query: DocsQueryDto,
-  ): Promise<docs_v1.Schema$Document> {
+  ): Promise<GoogleDocDto> {
     return this.googleDocsService.fetchDocument(query.userId, params.docIdOrUrl);
   }
 }
