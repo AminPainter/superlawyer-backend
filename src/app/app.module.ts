@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { BullModule } from '@nestjs/bullmq';
+import { ConfigModule, ConfigType } from '@nestjs/config';
 import { AppController } from 'src/app/app.controller';
 import { AuthModule } from 'src/auth/auth.module';
 import { CryptoModule } from 'src/crypto/crypto.module';
@@ -18,6 +19,16 @@ import { validateEnv } from 'src/config/env.validation';
       cache: true,
       load: [config],
       validate: validateEnv,
+    }),
+    BullModule.forRootAsync({
+      inject: [config.KEY],
+      useFactory: (cfg: ConfigType<typeof config>) => ({
+        connection: {
+          host: cfg.redis.host,
+          port: cfg.redis.port,
+          password: cfg.redis.password,
+        },
+      }),
     }),
     PrismaModule,
     CryptoModule,

@@ -28,5 +28,10 @@ export const config = registerAs('config', () => {
       audience: env.JWT_AUDIENCE,
       expiresIn: env.JWT_EXPIRES_IN,
     },
+    redis: {
+      host: env.REDIS_HOST,
+      port: env.REDIS_PORT,
+      password: env.REDIS_PASSWORD,
+    },
   };
 });

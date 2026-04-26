@@ -18,6 +18,9 @@ export const envSchema = z.object({
   JWT_AUDIENCE: z.string().min(1).default('superlawyer-frontend'),
   JWT_EXPIRES_IN: z.string().min(1).default('7d'),
   COOKIE_DOMAIN: z.string().min(1).optional(),
+  REDIS_HOST: z.string().min(1).default('localhost'),
+  REDIS_PORT: z.coerce.number().int().positive().default(6379),
+  REDIS_PASSWORD: z.string().min(1).optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;
