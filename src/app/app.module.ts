@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from 'src/app/app.controller';
 import { AuthModule } from 'src/auth/auth.module';
 import { CryptoModule } from 'src/crypto/crypto.module';
+import { GoogleDocsModule } from 'src/google-docs/google-docs.module';
 import { GoogleOauthModule } from 'src/google-oauth/google-oauth.module';
 import { OAuthAccountsModule } from 'src/oauth-accounts/oauth-accounts.module';
 import { PrismaModule } from 'src/prisma/prisma.module';
@@ -24,6 +25,7 @@ import { validateEnv } from 'src/config/env.validation';
     OAuthAccountsModule,
     AuthModule,
     GoogleOauthModule,
+    GoogleDocsModule,
   ],
   controllers: [AppController],
 })

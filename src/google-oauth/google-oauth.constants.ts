@@ -5,4 +5,5 @@ export const GOOGLE_OAUTH_SCOPES = [
   'email',
   'profile',
   'https://www.googleapis.com/auth/documents.readonly',
+  'https://www.googleapis.com/auth/drive',
 ];

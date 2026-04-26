@@ -23,7 +23,7 @@ interface GoogleTokenParams {
 }
 
 @Injectable()
-export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
+export class GoogleStrategy extends PassportStrategy(Strategy, 'google', true) {
   constructor(
     @Inject(config.KEY) envConfig: ConfigType<typeof config>,
     private readonly usersService: UsersService,
