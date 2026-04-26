@@ -9,7 +9,9 @@ import { UsersModule } from 'src/users/users.module';
 @Module({
   imports: [OAuthAccountsModule, PrismaModule, UsersModule],
   controllers: [GoogleOauthController],
-  providers: [{ provide: GoogleOauthService, useClass: GoogleapisOauthService }],
+  providers: [
+    { provide: GoogleOauthService, useClass: GoogleapisOauthService },
+  ],
   exports: [GoogleOauthService],
 })
 export class GoogleOauthModule {}

@@ -4,18 +4,14 @@ import { ConfigType } from '@nestjs/config';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { AppModule } from 'src/app/app.module';
 import { ShutdownService } from 'src/app/shutdown.service';
-import { AllExceptionsFilter } from 'src/common/all-exceptions.filter';
+import { AllExceptionsFilter } from 'src/shared/all-exceptions.filter';
 import { config } from 'src/config/config';
-import { JsonLogger } from 'src/logging/json-logger.service';
-import { requestContextMiddleware } from 'src/logging/request-context.middleware';
 
 const SHUTDOWN_DRAIN_MS = 5_000;
 const SHUTDOWN_FORCE_MS = 25_000;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { bufferLogs: true });
-  app.useLogger(app.get(JsonLogger));
-  app.use(requestContextMiddleware);
+  const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ZodValidationPipe());
   app.useGlobalFilters(new AllExceptionsFilter());
   app.enableVersioning({ type: VersioningType.URI });

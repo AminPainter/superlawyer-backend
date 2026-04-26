@@ -35,14 +35,6 @@ export class GoogleapisOauthService extends GoogleOauthService {
     super();
   }
 
-  private createClient(): OAuth2Client {
-    return new google.auth.OAuth2(
-      this.envConfig.google.clientId,
-      this.envConfig.google.clientSecret,
-      this.envConfig.google.redirectUri,
-    );
-  }
-
   getOAuthUrl(): string {
     return this.createClient().generateAuthUrl({
       access_type: 'offline',
@@ -159,5 +151,13 @@ export class GoogleapisOauthService extends GoogleOauthService {
     });
 
     return client;
+  }
+
+  private createClient(): OAuth2Client {
+    return new google.auth.OAuth2(
+      this.envConfig.google.clientId,
+      this.envConfig.google.clientSecret,
+      this.envConfig.google.redirectUri,
+    );
   }
 }

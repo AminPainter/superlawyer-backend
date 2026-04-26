@@ -5,7 +5,6 @@ import { ShutdownService } from 'src/app/shutdown.service';
 import { CryptoModule } from 'src/crypto/crypto.module';
 import { GoogleOauthModule } from 'src/google-oauth/google-oauth.module';
 import { GoogleDocsModule } from 'src/google-docs/google-docs.module';
-import { LoggingModule } from 'src/logging/logging.module';
 import { OAuthAccountsModule } from 'src/oauth-accounts/oauth-accounts.module';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { UsersModule } from 'src/users/users.module';
@@ -20,7 +19,6 @@ import { validateEnv } from 'src/config/env.validation';
       load: [config],
       validate: validateEnv,
     }),
-    LoggingModule,
     PrismaModule,
     CryptoModule,
     UsersModule,

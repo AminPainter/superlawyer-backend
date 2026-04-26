@@ -7,13 +7,11 @@ import {
   Logger,
 } from '@nestjs/common';
 import type { Request, Response } from 'express';
-import { getRequestContext } from 'src/logging/request-context';
 
 interface ErrorResponseBody {
   statusCode: number;
   message: string;
   code?: string;
-  requestId?: string;
   path: string;
   timestamp: string;
 }
@@ -38,7 +36,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
       statusCode: status,
       message,
       ...(code !== undefined && { code }),
-      requestId: getRequestContext()?.requestId,
       path: request.url,
       timestamp: new Date().toISOString(),
     };
