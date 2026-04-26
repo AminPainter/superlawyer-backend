@@ -85,7 +85,6 @@ export class GoogleapisOauthService extends GoogleOauthService {
             ? new Date(tokens.expiry_date)
             : null,
           refreshToken,
-          idToken: tokens.id_token ?? null,
         },
         tx,
       );

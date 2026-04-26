@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import type { Credentials } from 'google-auth-library';
 import type { OAuthAccount, Prisma } from 'generated/prisma/client';
 import { CryptoService } from 'src/crypto/crypto.service';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { OAuthAccountsRepository } from 'src/oauth-accounts/oauth-accounts.repository';
 
 export type UpsertOAuthAccountInput = Omit<
   Prisma.OAuthAccountUncheckedCreateInput,
@@ -25,29 +25,21 @@ export class OAuthAccountsService {
   private readonly logger = new Logger(OAuthAccountsService.name);
 
   constructor(
-    private readonly prismaService: PrismaService,
+    private readonly oauthAccountsRepository: OAuthAccountsRepository,
     private readonly cryptoService: CryptoService,
   ) {}
 
   async upsertForUser(
     input: UpsertOAuthAccountInput,
-    tx: Prisma.TransactionClient = this.prismaService,
+    tx?: Prisma.TransactionClient,
   ): Promise<OAuthAccount> {
-    const [accessTokenSealed, refreshTokenSealed, idTokenSealed] =
-      await Promise.all([
-        this.cryptoService.seal(input.accessToken),
-        this.cryptoService.seal(input.refreshToken),
-        input.idToken ? this.cryptoService.seal(input.idToken) : null,
-      ]);
+    const [accessTokenSealed, refreshTokenSealed] = await Promise.all([
+      this.cryptoService.seal(input.accessToken),
+      this.cryptoService.seal(input.refreshToken),
+    ]);
 
-    const account = await tx.oAuthAccount.upsert({
-      where: {
-        provider_providerAccountId: {
-          provider: input.provider,
-          providerAccountId: input.providerAccountId,
-        },
-      },
-      create: {
+    const account = await this.oauthAccountsRepository.upsertByProviderAccount(
+      {
         userId: input.userId,
         provider: input.provider,
         providerAccountId: input.providerAccountId,
@@ -57,19 +49,9 @@ export class OAuthAccountsService {
         accessToken: accessTokenSealed,
         accessTokenExpiresAt: input.accessTokenExpiresAt ?? null,
         refreshToken: refreshTokenSealed,
-        idToken: idTokenSealed,
       },
-      update: {
-        userId: input.userId,
-        providerEmail: input.providerEmail ?? null,
-        scope: input.scope,
-        tokenType: input.tokenType ?? null,
-        accessToken: accessTokenSealed,
-        accessTokenExpiresAt: input.accessTokenExpiresAt ?? null,
-        refreshToken: refreshTokenSealed,
-        ...(idTokenSealed ? { idToken: idTokenSealed } : {}),
-      },
-    });
+      tx,
+    );
 
     this.logger.log({
       message: 'OAuth account upserted',
@@ -83,9 +65,10 @@ export class OAuthAccountsService {
     userId: string,
     provider: string,
   ): Promise<OAuthAccountTokens | null> {
-    const row = await this.prismaService.oAuthAccount.findFirst({
-      where: { userId, provider },
-    });
+    const row = await this.oauthAccountsRepository.findByUserAndProvider(
+      userId,
+      provider,
+    );
     if (!row) return null;
 
     const [accessToken, refreshToken] = await Promise.all([
@@ -112,9 +95,11 @@ export class OAuthAccountsService {
         ? this.cryptoService.seal(tokens.refresh_token)
         : null,
     ]);
-    await this.prismaService.oAuthAccount.updateMany({
-      where: { userId, provider },
-      data: {
+
+    await this.oauthAccountsRepository.updateTokensByUserAndProvider(
+      userId,
+      provider,
+      {
         ...(accessTokenSealed !== null
           ? { accessToken: accessTokenSealed }
           : {}),
@@ -125,6 +110,6 @@ export class OAuthAccountsService {
         ...(tokens.token_type ? { tokenType: tokens.token_type } : {}),
         ...(tokens.scope ? { scope: tokens.scope } : {}),
       },
-    });
+    );
   }
 }
