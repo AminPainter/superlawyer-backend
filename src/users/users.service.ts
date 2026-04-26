@@ -1,29 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import type { User } from 'generated/prisma/client';
-import { PrismaService } from 'src/prisma/prisma.service';
-
-export interface UpsertUserInput {
-  email: string;
-  name?: string | null;
-  pictureUrl?: string | null;
-}
+import { type User } from 'generated/prisma/client';
+import {
+  UsersRepository,
+  type UpsertUserByEmailInput,
+} from 'src/users/users.repository';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly usersRepository: UsersRepository) {}
 
-  async upsertByEmail(input: UpsertUserInput): Promise<User> {
-    return this.prismaService.user.upsert({
-      where: { email: input.email },
-      create: {
-        email: input.email,
-        name: input.name ?? null,
-        pictureUrl: input.pictureUrl ?? null,
-      },
-      update: {
-        name: input.name ?? null,
-        pictureUrl: input.pictureUrl ?? null,
-      },
-    });
+  async upsertByEmail(input: UpsertUserByEmailInput): Promise<User> {
+    return this.usersRepository.upsertByEmail(input);
   }
 }

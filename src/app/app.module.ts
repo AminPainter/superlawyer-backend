@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from 'src/app/app.controller';
-import { AppService } from 'src/app/app.service';
 import { CryptoModule } from 'src/crypto/crypto.module';
 import { GoogleOauthModule } from 'src/google-oauth/google-oauth.module';
 import { GoogleDocsModule } from 'src/google-docs/google-docs.module';
@@ -27,6 +26,5 @@ import { validateEnv } from 'src/config/env.validation';
     GoogleDocsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
